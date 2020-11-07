@@ -26,7 +26,7 @@ export default {
         height: .5rem;
         background: #fff;
         box-shadow: rgba(0, 0, 0, 0.1) 0 .02rem .1rem;
-        z-index: 999999;
+        z-index: 999;
     }
     .hd .back{
         position:absolute;

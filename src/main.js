@@ -8,6 +8,12 @@ import './assets/reset.css'
 import axios from 'axios'
 import Vant from 'vant';
 import 'vant/lib/index.css';
+import VueClipboard from 'vue-clipboard2'
+import echarts from 'echarts'
+
+Vue.prototype.$echarts = echarts
+
+Vue.use(VueClipboard)
 
 Vue.use(Vant);
 

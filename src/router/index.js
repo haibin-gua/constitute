@@ -7,6 +7,9 @@ import Side from '../pages/School/Side'
 import Express from '../pages/express/Express'
 import Phone from '../pages/Phone/Phone'
 import Word from '../pages/Word/Word'
+import Joke from '../pages/Joke/Joke'
+import Cartoon from '../pages/Cartoon/Cartoon'
+import Ep from '../pages/Ep/Ep'
 
 Vue.use(Router)
 
@@ -46,6 +49,21 @@ export default new Router({
       path:'/Word',
       name:'Word',
       component:Word
+    },
+    {
+      path:'/Joke',
+      name:'Joke',
+      component:Joke
+    },
+    {
+      path:'/Cartoon',
+      name:'Cartoon',
+      component:Cartoon
+    },
+    {
+      path:'/Ep',
+      name:'Ep',
+      component:Ep
     }
   ]
 })

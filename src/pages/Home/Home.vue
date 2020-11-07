@@ -42,22 +42,28 @@
         </router-link>
       </li>
       <li>
-        <div class="icon">
-          <i style="font-size:.5rem;" class="iconfont icon-IP"></i>
-        </div>
-        <div class="txt">ddf</div>
+        <router-link to='JOke'>
+          <div class="icon">
+            <i style="font-size:.5rem;" class="iconfont icon-IP"></i>
+          </div>
+          <div class="txt">开心一笑</div>
+        </router-link>
       </li>
       <li>
-        <div class="icon">
-          <i style="font-size:.5rem;" class="iconfont icon-IP"></i>
-        </div>
-        <div class="txt">ddf</div>
+        <router-link to="Cartoon">
+          <div class="icon">
+            <i style="font-size:.5rem;" class="iconfont icon-IP"></i>
+          </div>
+          <div class="txt">二次元</div>
+        </router-link>
       </li>
       <li>
-        <div class="icon">
-          <i style="font-size:.5rem;" class="iconfont icon-IP"></i>
-        </div>
-        <div class="txt">ddf</div>
+        <router-link to="Ep">
+          <div class="icon">
+            <i style="font-size:.5rem;" class="iconfont icon-IP"></i>
+          </div>
+          <div class="txt">全国疫情</div>
+        </router-link>
       </li>
       <li>
         <div class="icon">
