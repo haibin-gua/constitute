@@ -5,44 +5,44 @@
           <div class="por1">
               <div class="por1-hd">
                   <h3>全国疫情</h3>
-                  <span class="time">更新时间 2020/11/07 18:00</span>
+                  <span class="time">更新时间 {{time}}</span>
               </div>
               <div class="por1-bd">
                   <ul>
                       <li>
-                          <div class="data orange">586</div>
+                          <div class="data orange">{{confirmedNum}}</div>
                           <div class="txt">现有确诊</div>
-                          <div class="yd">昨日<big class="orange">+5</big></div>
+                          <div class="yd">昨日<big class="orange">+{{confirmed_inc}}</big></div>
                       </li>
                       <li>
-                          <div class="data">586</div>
+                          <div class="data">{{deadNum}}</div>
                           <div class="txt">死亡人数</div>
-                          <div class="yd">昨日<big>+5</big></div>
+                          <div class="yd">昨日<big>+{{dead_inc}}</big></div>
                       </li>
                       <li>
-                          <div class="data green">586</div>
+                          <div class="data green">{{curedNum}}</div>
                           <div class="txt">治愈人数</div>
-                          <div class="yd">昨日<big class="green">+5</big></div>
+                          <div class="yd">昨日<big class="green">+{{cured_inc}}</big></div>
                       </li>
                       <li>
-                          <div class="data red1">586</div>
+                          <div class="data red1">{{sum}}</div>
                           <div class="txt">累计确诊</div>
-                          <div class="yd">昨日<big class="red1">+5</big></div>
+                          <div class="yd"><big class="red1">暂无数据</big></div>
                       </li>
                       <li>
-                          <div class="data red2">586</div>
+                          <div class="data red2">{{externalConfirmedNum}}</div>
                           <div class="txt">境外输入确诊</div>
-                          <div class="yd">昨日<big class="red2">+5</big></div>
+                          <div class="yd"><big class="red2">暂无数据</big></div>
                       </li>
                       <li>
-                          <div class="data yellow">586</div>
+                          <div class="data yellow">{{suspectedNum}}</div>
                           <div class="txt">疑似病例</div>
-                          <div class="yd">昨日<big class="yellow">+5</big></div>
+                          <div class="yd"><big class="yellow">暂无数据</big></div>
                       </li>
                       <li>
-                          <div class="data violet">586</div>
+                          <div class="data violet">{{asymptomaticNum}}</div>
                           <div class="txt">无症状感染者</div>
-                          <div class="yd">昨日<big class="violet">+5</big></div>
+                          <div class="yd"><big class="violet">暂无数据</big></div>
                       </li>
                   </ul>
               </div>
@@ -61,9 +61,74 @@
           </div>
           <div class="por3">
               <h3>前日无症状感染者分布</h3>
-              <div class="asym">
-                  <div id="asym1" style="width:5rem;height:3rem;"></div>
+              <div class="asym" v-show="isshow3">
+                  <div id="asym1" style="width:4.1rem;height:2.6rem;margin-left:-.2rem"></div>
               </div>
+              <div class="asym" v-show="isshow4">
+                  <div id="asym2" style="width:4.1rem;height:2.6rem;margin-left:-.2rem"></div>
+              </div>
+              <div class="btns">
+                  <div :class="['btn','left',red3]" @click="btn3">现有无症状感染者</div>
+                  <div :class="['btn','right',red4]" @click="btn4">新增无症状感染者</div>
+              </div>
+          </div>
+          <div class="por4">
+            <div class="por4-new">
+               <div id="new" style="width:4.1rem;height:2.6rem;margin-left:-.2rem"></div>
+            </div>
+            <h6>该数据不包含港澳台地区的新增确诊病例</h6>
+          </div>
+          <div class="por5">
+            <h3>全国疫情趋势</h3>
+            <div class="bro">
+              <div id="bro1" v-show="bro1" style="width:4.1rem;height:2.6rem;margin-left:-.2rem"></div>
+              <div id="bro2" v-show="bro2" style="width:4.1rem;height:2.6rem;margin-left:-.2rem"></div>
+              <div id="bro3" v-show="bro3" style="width:4.1rem;height:2.6rem;margin-left:-.2rem"></div>
+              <div id="bro4" v-show="bro4" style="width:4.1rem;height:2.6rem;margin-left:-.2rem"></div>
+              <div id="bro5" v-show="bro5" style="width:4.1rem;height:2.6rem;margin-left:-.2rem"></div>
+            </div>
+            <div class="btns">
+              <div :class="['btn','left',red5]" @click="btn5">现有确诊/<br>现有疑似</div>
+              <div :class="['btn','right',red6]" @click="btn6">新增确诊/<br>新增疑似</div>
+              <div :class="['btn','right',red7]" @click="btn7">全国疫情<br>累计趋势</div>
+              <div :class="['btn','right',red8]" @click="btn8">境外输入<br>趋势</div>
+              <div :class="['btn','right',red9]" @click="btn9">病死率/<br>自愈率</div>
+            </div>
+          </div>
+          <div class="por6">
+            <h3>全国省市疫情</h3>
+            <div class="bd">
+              <div class="bd-hd">
+                <ul>
+                  <li>地区</li>
+                  <li style="color:#C04B00;background:#FFF1E9">现有</li>
+                  <li style="color:#F2A417;background:#FDF2DC">新增</li>
+                  <li style="color:#AE212C;background:#F7E8EA">累计</li>
+                  <li style="backgroudn:#E8F1FF">死亡</li>
+                  <li style="color:#87DAF6">治愈</li>
+                </ul>
+              </div>
+              <div class="list">
+                <ul>
+                  <li>
+                    <span>湖北</span>
+                    <span>8</span>
+                    <span>4</span>
+                    <span>200</span>
+                    <span>4000</span>
+                    <span>50000</span>
+                  </li>
+                  <li>
+                    <span>湖北</span>
+                    <span>8</span>
+                    <span>4</span>
+                    <span>200</span>
+                    <span>4000</span>
+                    <span>50000</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
       </div>
   </div>
@@ -77,8 +142,33 @@ export default {
         return{
             red:'active',
             red2:'',
+            red3:'active',
+            red4:'',
+            red5:'active',
+            red6:'',
+            red7:'',
+            red8:'',
+            red9:'',
             isshow:true,
-            isshow2:false
+            isshow2:false,
+            isshow3:true,
+            isshow4:false,
+            bro1:true,
+            bro2:false,
+            bro3:false,
+            bro4:false,
+            bro5:false,
+            confirmedNum:'',
+            deadNum:'',
+            suspectedNum:'暂无数据',
+            curedNum:'',
+            sum:'',
+            asymptomaticNum:'',
+            externalConfirmedNum:'',
+             confirmed_inc:'',
+             dead_inc:'',
+             cured_inc:'',
+             time:''
         }
     },
     components:{
@@ -96,6 +186,78 @@ export default {
             this.red2 = 'active'
             this.isshow = false
             this.isshow2 = true
+        },
+        btn3(){
+            this.red3 = 'active'
+            this.red4 = ''
+            this.isshow3 = true
+            this.isshow4 = false
+        },
+        btn4(){
+            this.red3 = ''
+            this.red4 = 'active'
+            this.isshow3 = false
+            this.isshow4 = true
+        },
+        btn5(){
+          this.red5 = 'active'
+          this.bro1 = true
+          this.bro2 = false
+          this.bro3 = false
+          this.bro4 = false
+          this.bro5 = false
+          this.red6 = ''
+          this.red7 = ''
+          this.red8 = '' 
+          this.red9 = ''
+        },
+        btn6(){
+          this.red6 = 'active'
+          this.bro1 = false
+          this.bro2 = true
+          this.bro3 = false
+          this.bro4 = false
+          this.bro5 = false
+          this.red5 = ''
+          this.red7 = ''
+          this.red8 = '' 
+          this.red9 = ''
+        },
+        btn7(){
+          this.red7 = 'active'
+          this.bro3 = true
+          this.bro2 = false
+          this.bro1 = false
+          this.bro4 = false
+          this.bro5 = false
+          this.red6 = ''
+          this.red5 = ''
+          this.red8 = '' 
+          this.red9 = ''
+        },
+        btn8(){
+          this.red8 = 'active'
+          this.bro1 = false
+          this.bro2 = false
+          this.bro3 = false
+          this.bro4 = true
+          this.bro5 = false
+          this.red6 = ''
+          this.red7 = ''
+          this.red5 = '' 
+          this.red9 = ''
+        },
+        btn9(){
+          this.red9 = 'active'
+          this.bro1 = false
+          this.bro2 = false
+          this.bro3 = false
+          this.bro4 = false
+          this.bro5 = true
+          this.red6 = ''
+          this.red7 = ''
+          this.red8 = '' 
+          this.red5 = ''
         },
         myEcharts(){
 		  // 基于准备好的dom，初始化echarts实例
@@ -455,10 +617,24 @@ export default {
             var option = {
     xAxis: {
         type: 'category',
-        data: ['新疆', '广东', '四川', '浙江', '江苏', '河南', '福建','湖北','湖南','河北']
+        data: ['新疆', '广东', '四川', '浙江', '江苏', '河南', '福建','湖北','湖南','河北'],
+        axisTick:{
+            show:false  
+        },
+        axisLabel:{
+             rotate:45,
+             color:'#979797',
+             fontSize:8
+        }
     },
     yAxis: {
-        type: 'value'
+        type: 'value',
+        axisTick:{
+            show:false
+        },
+        axisLabel:{
+          fontSize:10
+        }
     },
     series: [{
         data: [120, 200, 150, 80, 70, 110, 130],
@@ -471,12 +647,512 @@ export default {
 };
             // 使用刚指定的配置项和数据显示图表。
 		  asym1.setOption(option);
+          },
+          myEcharts4(){
+              // 基于准备好的dom，初始化echarts实例
+            var asym2 = this.$echarts.init(document.getElementById('asym2'));
+            var option = {
+    xAxis: {
+        type: 'category',
+        data: ['新疆', '广东', '四川', '浙江', '江苏', '河南', '福建','湖北','湖南','河北'],
+        axisTick:{
+            show:false  
+        },
+        axisLabel:{
+             rotate:45,
+             color:'#979797',
+             fontSize:8
+        }
+    },
+    yAxis: {
+        type: 'value',
+        axisTick:{
+            show:false
+        },
+        axisLabel:{
+          fontSize:10
+        }
+    },
+    series: [{
+        data: [120, 200, 150, 80, 70, 110, 30],
+        type: 'bar',
+        itemStyle:{
+            color:'#9153AE'
+        },
+        barMaxWidth:10
+    }]
+};
+            // 使用刚指定的配置项和数据显示图表。
+		  asym2.setOption(option);
+          },
+          myEcharts5(){
+              // 基于准备好的dom，初始化echarts实例
+            var news = this.$echarts.init(document.getElementById('new'));
+            var option = {
+              title:{
+       text:'昨日新增分布',
+       left:20,
+       textStyle:{
+           fontWeight:'bold',
+           fontSize:20
+       }
+   },
+              tooltip: {
+                trigger: 'axis',
+                axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                    type: 'none'        // 默认为直线，可选为：'line' | 'shadow'
+                }
+            },
+            legend: {
+              right:80,
+              top:5,
+        data:[{
+            name:'本土新增',
+            textStyle:{
+                fontSize:8,
+                color:'#5EACE7'
+            }
+        },{
+            name:'境外输入',
+             textStyle:{
+                fontSize:8,
+                color:'#EA4D34'
+            },
+        }],
+        itemWidth:5,
+        itemHeight:5
+    },
+    xAxis: {
+        type: 'category',
+        data: ['新疆', '广东', '四川', '浙江', '江苏', '河南', '福建','湖北','湖南','河北'],
+        axisTick:{
+            show:false  
+        },
+        axisLabel:{
+             rotate:45,
+             color:'#979797',
+             fontSize:8
+        }
+    },
+    yAxis: {
+        type: 'value',
+        axisTick:{
+            show:false
+        },
+        axisLabel:{
+          fontSize:10
+        }
+    },
+    series: [
+      {
+            name: '本土新增',
+            type: 'bar',
+            barWidth: '60%',
+            data: [10, 52, 200, 334, 390, 330, 220],
+            barGap: '-100%',//添加此配置项即为重叠效果
+            itemStyle:{
+              color:'#5EACE7'
+            },
+            barMaxWidth:10
+        },
+        {
+            name: '境外输入',
+            type: 'bar',
+            barWidth: '60%',
+            data: [10, 52, 200, 334, 390, 330, 220],
+            barGap: '-100%',//添加此配置项即为重叠效果
+            itemStyle:{
+              color:'#EA4D34'
+            },
+            barMaxWidth:10
+        }
+    ]
+};
+            // 使用刚指定的配置项和数据显示图表。
+		  news.setOption(option);
+          },
+          myEcharts6(){
+            // 基于准备好的dom，初始化echarts实例
+            var bro1 = this.$echarts.init(document.getElementById('bro1'));
+            var option = {
+    tooltip: {
+        trigger: 'axis'
+    },
+    legend: {
+        data: [{
+            name:'现有确诊',
+            textStyle:{
+                color:'#E96C28'
+            }
+        },{
+            name:'现有疑似',
+            textStyle:{
+                color:'#FFC339'   
+            }
+        }]
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        axisLabel:{
+            interval:15  
+        },
+        data: ['01.23', '01.24', '01.25', '01.26', '01.27', '01.28', '01.29','01.20','01.31','02.01','02.02','02.03','02.04','02.05','02.06','02.07','02.08']
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [
+        {
+            name: '现有确诊',
+            type: 'line',
+            stack: '总量',
+            smooth:true,
+            itemStyle:{
+                color:'#E96C28'
+            },
+            data: [0, 132, 101, 134, 90, 230, 210,0, 132, 101, 134, 90, 230, 210]
+        },
+        {
+            name: '现有疑似',
+            type: 'line',
+            stack: '总量',
+            smooth:true,
+            itemStyle:{
+                color:'#FFE4A5'
+            },
+            
+            data: [0, 182, 191, 234, 290, 330, 310,0, 132, 101, 134, 90, 230, 210]
+        }
+    ]
+};
+          // 使用刚指定的配置项和数据显示图表。
+		  bro1.setOption(option);
+          },
+          myEcharts7(){
+            // 基于准备好的dom，初始化echarts实例
+            var bro2 = this.$echarts.init(document.getElementById('bro2'));
+            var option = {
+    tooltip: {
+        trigger: 'axis'
+    },
+    legend: {
+        data: [{
+            name:'现有确诊',
+            textStyle:{
+                color:'#E96C28'
+            }
+        },{
+            name:'现有疑似',
+            textStyle:{
+                color:'#FFC339'   
+            }
+        }]
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        axisLabel:{
+            interval:15  
+        },
+        data: ['01.23', '01.24', '01.25', '01.26', '01.27', '01.28', '01.29','01.20','01.31','02.01','02.02','02.03','02.04','02.05','02.06','02.07','02.08']
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [
+        {
+            name: '现有确诊',
+            type: 'line',
+            stack: '总量',
+            smooth:true,
+            itemStyle:{
+                color:'#E96C28'
+            },
+            data: [0, 132, 101, 134, 90, 230, 210,0, 132, 101, 134, 90, 230, 210]
+        },
+        {
+            name: '现有疑似',
+            type: 'line',
+            stack: '总量',
+            smooth:true,
+            itemStyle:{
+                color:'#FFE4A5'
+            },
+            
+            data: [0, 182, 191, 234, 290, 330, 310,0, 132, 101, 134, 90, 230, 210]
+        }
+    ]
+};
+          // 使用刚指定的配置项和数据显示图表。
+		  bro2.setOption(option);
+          },
+          myEcharts8(){
+            // 基于准备好的dom，初始化echarts实例
+            var bro3 = this.$echarts.init(document.getElementById('bro3'));
+            var option = {
+    tooltip: {
+        trigger: 'axis'
+    },
+    legend: {
+        data: [{
+            name:'现有确诊',
+            textStyle:{
+                color:'#E96C28'
+            }
+        },{
+            name:'现有疑似',
+            textStyle:{
+                color:'#FFC339'   
+            }
+        }]
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        axisLabel:{
+            interval:15  
+        },
+        data: ['01.23', '01.24', '01.25', '01.26', '01.27', '01.28', '01.29','01.20','01.31','02.01','02.02','02.03','02.04','02.05','02.06','02.07','02.08']
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [
+        {
+            name: '现有确诊',
+            type: 'line',
+            stack: '总量',
+            smooth:true,
+            itemStyle:{
+                color:'#E96C28'
+            },
+            data: [0, 132, 101, 134, 90, 230, 210,0, 132, 101, 134, 90, 230, 210]
+        },
+        {
+            name: '现有疑似',
+            type: 'line',
+            stack: '总量',
+            smooth:true,
+            itemStyle:{
+                color:'#FFE4A5'
+            },
+            
+            data: [0, 182, 191, 234, 290, 330, 310,0, 132, 101, 134, 90, 230, 210]
+        }
+    ]
+};
+          // 使用刚指定的配置项和数据显示图表。
+		  bro3.setOption(option);
+          },
+          myEcharts9(){
+            // 基于准备好的dom，初始化echarts实例
+            var bro4 = this.$echarts.init(document.getElementById('bro4'));
+            var option = {
+    tooltip: {
+        trigger: 'axis'
+    },
+    legend: {
+        data: [{
+            name:'现有确诊',
+            textStyle:{
+                color:'#E96C28'
+            }
+        },{
+            name:'现有疑似',
+            textStyle:{
+                color:'#FFC339'   
+            }
+        }]
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        axisLabel:{
+            interval:15  
+        },
+        data: ['01.23', '01.24', '01.25', '01.26', '01.27', '01.28', '01.29','01.20','01.31','02.01','02.02','02.03','02.04','02.05','02.06','02.07','02.08']
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [
+        {
+            name: '现有确诊',
+            type: 'line',
+            stack: '总量',
+            smooth:true,
+            itemStyle:{
+                color:'#E96C28'
+            },
+            data: [0, 132, 101, 134, 90, 230, 210,0, 132, 101, 134, 90, 230, 210]
+        },
+        {
+            name: '现有疑似',
+            type: 'line',
+            stack: '总量',
+            smooth:true,
+            itemStyle:{
+                color:'#FFE4A5'
+            },
+            
+            data: [0, 182, 191, 234, 290, 330, 310,0, 132, 101, 134, 90, 230, 210]
+        }
+    ]
+};
+          // 使用刚指定的配置项和数据显示图表。
+		  bro4.setOption(option);
+          },
+          myEcharts10(){
+            // 基于准备好的dom，初始化echarts实例
+            var bro5 = this.$echarts.init(document.getElementById('bro5'));
+            var option = {
+    tooltip: {
+        trigger: 'axis'
+    },
+    legend: {
+        data: [{
+            name:'现有确诊',
+            textStyle:{
+                color:'#E96C28'
+            }
+        },{
+            name:'现有疑似',
+            textStyle:{
+                color:'#FFC339'   
+            }
+        }]
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        axisLabel:{
+            interval:15  
+        },
+        data: ['01.23', '01.24', '01.25', '01.26', '01.27', '01.28', '01.29','01.20','01.31','02.01','02.02','02.03','02.04','02.05','02.06','02.07','02.08']
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [
+        {
+            name: '现有确诊',
+            type: 'line',
+            stack: '总量',
+            smooth:true,
+            itemStyle:{
+                color:'#E96C28'
+            },
+            data: [0, 132, 101, 134, 90, 230, 210,0, 132, 101, 134, 90, 230, 210]
+        },
+        {
+            name: '现有疑似',
+            type: 'line',
+            stack: '总量',
+            smooth:true,
+            itemStyle:{
+                color:'#FFE4A5'
+            },
+            
+            data: [0, 182, 191, 234, 290, 330, 310,0, 132, 101, 134, 90, 230, 210]
+        }
+    ]
+};
+          // 使用刚指定的配置项和数据显示图表。
+		  bro5.setOption(option);
           }
     },
     mounted() {
       this.myEcharts();
       this.myEcharts2();
       this.myEcharts3();
+      this.myEcharts4();
+      this.myEcharts5();
+      this.myEcharts6();
+      this.myEcharts7();
+      this.myEcharts8();
+      this.myEcharts9();
+      this.myEcharts10();
+      this.$http.post('https://route.showapi.com/2217-2?showapi_appid=424316&showapi_timestamp=20201109013619&showapi_sign=824ab60a19b84e00a7782f63045704b2')
+        .then(res=>{
+          let time = res.data.showapi_res_body.updateTime
+          this.time = time
+          let data = res.data.showapi_res_body.todayStatictic
+          this.confirmedNum = data.confirmedNum  //现有确诊
+          this.deadNum = data.deadNum  //死亡病例
+          if(data.suspectedNum == -1){
+            this.suspectedNum = '暂无数据'
+          }else{
+            this.suspectedNum = data.suspectedNum
+          }
+          this.curedNum = data.curedNum //自愈病例
+          this.sum = data.confirmedNum + data.deadNum + data.curedNum  //累计确诊
+          this.externalConfirmedNum = data.externalConfirmedNum //境外确诊
+          this.asymptomaticNum = data.asymptomaticNum  //无症状感染者
+        }),
+        this.$http.post('https://route.showapi.com/2217-6?date=20201107&country=china&showapi_appid=424316&showapi_sign=824ab60a19b84e00a7782f63045704b2')
+          .then(res=>{
+            console.log(res)
+            let data = res.data.showapi_res_body.list[0].inc_info
+            this.confirmed_inc = data.confirmed_inc  //新增确诊
+            this.dead_inc = data.dead_inc  //新增死亡
+            this. cured_inc = data. cured_inc  //新增自愈
+          })
   }
 }
 </script>
@@ -548,7 +1224,7 @@ export default {
     }
     .btns .btn{
         display: inline-block;
-        width:1.1rem;
+        padding:0 .1rem;
         height: .5rem;
         font-size: .16rem;
         background: #F4F5F6;
@@ -568,7 +1244,72 @@ export default {
         font-size: .22rem;
         font-weight: bold;
         color: #333;
-        float: left;
+       text-align: left;
         margin-right: .2rem;
+    }
+    .por4{
+      margin-top:.2rem;
+    }
+    .por4>h6{
+      color: #D7D7D7;
+      font-size: .12rem;
+      margin-top:-.3rem;
+    }
+    .por5{
+      margin-top:.2rem;
+    }
+    .por5 h3{
+        font-size: .22rem;
+        font-weight: bold;
+        color: #333;
+        text-align: left;
+        margin-right: .2rem;
+    }
+    .por5 .btns .btn{
+      line-height: .18rem;
+      height: .4rem;
+      font-size: .12rem;
+      padding:0 .07rem;
+    }
+    .por6{
+      margin-top:.2rem;
+    }
+    .por6 h3{
+        font-size: .22rem;
+        font-weight: bold;
+        color: #333;
+        text-align: left;
+        margin-right: .2rem;
+    }
+    .por6 .bd{
+      margin-top:.2rem;
+    }
+    .por6 .bd-hd{
+      overflow: hidden;
+    }
+    .por6 .bd-hd>ul>li{
+      float: left;
+      font-size: .14rem;
+      color:#333;
+      background: #333;
+      width:16%;
+      height: .4rem;
+      text-align: center;
+      line-height: .4rem;
+      margin-right: .6%;
+      background: #F6F6F6;
+    }
+    .por6 .bd-hd>ul>li:last-child{
+      margin-right: 0;
+    }
+    .por6 .bd .list{
+      margin-top:.1rem;
+    }
+    .por6 .bd .list>ul>li>span{
+      display: inline-block;
+      font-size: .14rem;
+      width:16%;
+      text-align: center;
+      margin-right: -.06rem;
     }
 </style>
