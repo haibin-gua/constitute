@@ -61,10 +61,12 @@
           </div>
           <div class="por3">
               <h3>前日无症状感染者分布</h3>
-              <div class="asym" v-show="isshow3">
+              <div class="asym" style="position:relative;" v-show="isshow3">
+                <div class="shade"><span>暂无数据</span></div>
                   <div id="asym1" style="width:4.1rem;height:2.6rem;margin-left:-.2rem"></div>
               </div>
-              <div class="asym" v-show="isshow4">
+              <div class="asym" v-show="isshow4"  style="position:relative;">
+                <div class="shade"><span>暂无数据</span></div>
                   <div id="asym2" style="width:4.1rem;height:2.6rem;margin-left:-.2rem"></div>
               </div>
               <div class="btns">
@@ -73,7 +75,8 @@
               </div>
           </div>
           <div class="por4">
-            <div class="por4-new">
+            <div class="por4-new" style="position:relative;">
+              <div class="shade"><span>暂无数据</span></div>
                <div id="new" style="width:4.1rem;height:2.6rem;margin-left:-.2rem"></div>
             </div>
             <h6>该数据不包含港澳台地区的新增确诊病例</h6>
@@ -110,21 +113,13 @@
               </div>
               <div class="list">
                 <ul>
-                  <li>
-                    <span>湖北</span>
-                    <span>8</span>
-                    <span>4</span>
-                    <span>200</span>
-                    <span>4000</span>
-                    <span>50000</span>
-                  </li>
-                  <li>
-                    <span>湖北</span>
-                    <span>8</span>
-                    <span>4</span>
-                    <span>200</span>
-                    <span>4000</span>
-                    <span>50000</span>
+                  <li v-for="item in citylist" :key="item.index">
+                    <span>{{item.name}}</span>
+                    <span>{{item.currentConfirmedNum}}</span>
+                    <span style="color:#F2A71F;">暂无数据</span>
+                    <span>{{item.confirmedNum}}</span>
+                    <span>{{item.deadNum}}</span>
+                    <span>{{item.curedNum}}</span>
                   </li>
                 </ul>
               </div>
@@ -137,6 +132,7 @@
 <script>
 import EpHeader from '../Public/Header'
 import '../../../static/china'
+import dayjs from 'dayjs'
 export default {
     data(){
         return{
@@ -168,7 +164,8 @@ export default {
              confirmed_inc:'',
              dead_inc:'',
              cured_inc:'',
-             time:''
+             time:'',
+             citylist:[]
         }
     },
     components:{
@@ -259,9 +256,9 @@ export default {
           this.red8 = '' 
           this.red5 = ''
         },
-        myEcharts(){
-		  // 基于准备好的dom，初始化echarts实例
-		  var map1 = this.$echarts.init(document.getElementById('map1'));
+        myEcharts(){    
+        // 基于准备好的dom，初始化echarts实例
+      var map1 = this.$echarts.init(document.getElementById('map1'));
 		  // 指定图表的配置项和数据
 		  var option = {
               title: {
@@ -324,118 +321,49 @@ export default {
                 color: 'rgb(249, 249, 249)',
                 fontsize:12
             },
-            data: [
-               {
-                  name: '北京',
-                  value: 212
-                }, {
-                  name: '天津',
-                  value: 60
-                }, {
-                  name: '上海',
-                  value: 208
-                }, {
-                  name: '重庆',
-                  value: 337
-                }, {
-                  name: '河北',
-                  value: 126
-                }, {
-                  name: '河南',
-                  value: 675
-                }, {
-                  name: '云南',
-                  value: 117
-                }, {
-                  name: '辽宁',
-                  value: 74
-                }, {
-                  name: '黑龙江',
-                  value: 155
-                }, {
-                  name: '湖南',
-                  value: 593
-                }, {
-                  name: '安徽',
-                  value: 480
-                }, {
-                  name: '山东',
-                  value: 270
-                }, {
-                  name: '新疆',
-                  value: 29
-                }, {
-                  name: '江苏',
-                  value: 308
-                }, {
-                  name: '浙江',
-                  value: 829
-                }, {
-                  name: '江西',
-                  value: 476
-                }, {
-                  name: '湖北',
-                  value: 13522
-                }, {
-                  name: '广西',
-                  value: 139
-                }, {
-                  name: '甘肃',
-                  value: 55
-                }, {
-                  name: '山西',
-                  value: 74
-                }, {
-                  name: '内蒙古',
-                  value: 34
-                }, {
-                  name: '陕西',
-                  value: 142
-                }, {
-                  name: '吉林',
-                  value: 42
-                }, {
-                  name: '福建',
-                  value: 179
-                }, {
-                  name: '贵州',
-                  value: 56
-                }, {
-                  name: '广东',
-                  value: 797
-                }, {
-                  name: '青海',
-                  value: 15
-                }, {
-                  name: '西藏',
-                  value: 1
-                }, {
-                  name: '四川',
-                  value: 282
-                }, {
-                  name: '宁夏',
-                  value: 34
-                }, {
-                  name: '海南',
-                  value: 79
-                }, {
-                  name: '台湾',
-                  value: 10
-                }, {
-                  name: '香港',
-                  value: 15
-                }, {
-                  name: '澳门',
-                  value: 9
-                }
-            ]
+            data:[]
         }
     ]
 };
-		  // 使用刚指定的配置项和数据显示图表。
-		  map1.setOption(option);
-          },
+      //获取数据
+      this.$http.post('https://route.showapi.com/2217-2?showapi_appid=424316&showapi_timestamp=20201109013619&showapi_sign=824ab60a19b84e00a7782f63045704b2')
+        .then(res=>{
+          var data = []
+          let data2 = res.data.showapi_res_body.todayDetailList
+          for(let item of data2){
+               let item2 = JSON.parse(JSON.stringify(item).replace(/currentConfirmedNum/g,'value'))
+               data.push(JSON.parse(JSON.stringify(item2).replace(/provinceName/g,'name')))
+          }
+          for(let list of data){
+            list.name = list.name.replace('省','');
+            list.name = list.name.replace('维吾尔自治区','');
+            list.name = list.name.replace('壮族自治区','');
+            list.name = list.name.replace('回族自治区','');
+            list.name = list.name.replace('自治区','');
+            list.name = list.name.replace('市','');
+          }
+          // console.log(data)
+          //填入数据
+        map1.setOption({
+          series:[{
+            name: '确诊数',
+            type: 'map',
+            mapType: 'china',
+            roam: false,
+            label: {
+                show: true,
+                color: 'rgb(249, 249, 249)',
+                fontsize:12
+            },
+            data:data
+          }]
+      })
+        })
+         // 使用刚指定的配置项和数据显示图表。
+      map1.setOption(option);
+  },
           myEcharts2(){
+            // console.log(this.data)
 		  // 基于准备好的dom，初始化echarts实例
 		  var map2 = this.$echarts.init(document.getElementById('map2'));
 		  // 指定图表的配置项和数据
@@ -500,114 +428,52 @@ export default {
                 color: 'rgb(249, 249, 249)',
                 fontsize:12
             },
-            data: [
-               {
-                  name: '北京',
-                  value: 212
-                }, {
-                  name: '天津',
-                  value: 60
-                }, {
-                  name: '上海',
-                  value: 208
-                }, {
-                  name: '重庆',
-                  value: 337
-                }, {
-                  name: '河北',
-                  value: 126
-                }, {
-                  name: '河南',
-                  value: 675
-                }, {
-                  name: '云南',
-                  value: 117
-                }, {
-                  name: '辽宁',
-                  value: 74
-                }, {
-                  name: '黑龙江',
-                  value: 155
-                }, {
-                  name: '湖南',
-                  value: 593
-                }, {
-                  name: '安徽',
-                  value: 480
-                }, {
-                  name: '山东',
-                  value: 270
-                }, {
-                  name: '新疆',
-                  value: 29
-                }, {
-                  name: '江苏',
-                  value: 308
-                }, {
-                  name: '浙江',
-                  value: 829
-                }, {
-                  name: '江西',
-                  value: 476
-                }, {
-                  name: '湖北',
-                  value: 13522
-                }, {
-                  name: '广西',
-                  value: 139
-                }, {
-                  name: '甘肃',
-                  value: 55
-                }, {
-                  name: '山西',
-                  value: 74
-                }, {
-                  name: '内蒙古',
-                  value: 34
-                }, {
-                  name: '陕西',
-                  value: 142
-                }, {
-                  name: '吉林',
-                  value: 42
-                }, {
-                  name: '福建',
-                  value: 179
-                }, {
-                  name: '贵州',
-                  value: 56
-                }, {
-                  name: '广东',
-                  value: 797
-                }, {
-                  name: '青海',
-                  value: 15
-                }, {
-                  name: '西藏',
-                  value: 1
-                }, {
-                  name: '四川',
-                  value: 282
-                }, {
-                  name: '宁夏',
-                  value: 34
-                }, {
-                  name: '海南',
-                  value: 79
-                }, {
-                  name: '台湾',
-                  value: 10
-                }, {
-                  name: '香港',
-                  value: 15
-                }, {
-                  name: '澳门',
-                  value: 9
-                }
-            ]
+            data: []
         }
     ]
 };
+      //获取数据
+      // let date = dayjs(dayjs())
+      // function formatZero(num) {   //解决单数没有0的问题
+      //    if(num.length < 2){
+      //      return '0' + num
+      //    }else return num
+      // }
+      // let datestr = String(date.$y) + formatZero(String(date.$M+1)) + formatZero(String(date.$D-1));
+      this.$http.post('https://route.showapi.com/2217-2?showapi_appid=424316&showapi_timestamp=20201109013619&showapi_sign=824ab60a19b84e00a7782f63045704b2')
+        .then(res=>{
+          // console.log(res)
+          let sum = []
+          let data = res.data.showapi_res_body.todayDetailList;
+          for(let item of data){
+               let item2 = JSON.parse(JSON.stringify(item).replace(/confirmedNum/g,'value'))
+               sum.push(JSON.parse(JSON.stringify(item2).replace(/provinceName/g,'name')))
+          }
+          for(let list of sum){
+            list.name = list.name.replace('省','');
+            list.name = list.name.replace('维吾尔自治区','');
+             list.name = list.name.replace('壮族自治区','');
+            list.name = list.name.replace('回族自治区','');
+            list.name = list.name.replace('自治区','');
+            list.name = list.name.replace('市','');
+          }
+          // console.log(sum)
+          //填入数据
+        map2.setOption({
+          series:[{
+            name: '确诊数',
+            type: 'map',
+            mapType: 'china',
+            roam: false,
+            label: {
+                show: true,
+                color: 'rgb(249, 249, 249)',
+                fontsize:12
+            },
+            data:sum
+          }]
+      })
+        })
 		  // 使用刚指定的配置项和数据显示图表。
 		  map2.setOption(option);
           },
@@ -637,7 +503,7 @@ export default {
         }
     },
     series: [{
-        data: [120, 200, 150, 80, 70, 110, 130],
+        data: [0, 0, 0, 0, 0, 0, 0],
         type: 'bar',
         itemStyle:{
             color:'#9153AE'
@@ -645,6 +511,8 @@ export default {
         barMaxWidth:10
     }]
 };
+        //获取数据
+        
             // 使用刚指定的配置项和数据显示图表。
 		  asym1.setOption(option);
           },
@@ -674,7 +542,7 @@ export default {
         }
     },
     series: [{
-        data: [120, 200, 150, 80, 70, 110, 30],
+        data: [0, 0, 0, 0, 0, 0, 0],
         type: 'bar',
         itemStyle:{
             color:'#9153AE'
@@ -726,7 +594,7 @@ export default {
         type: 'category',
         data: ['新疆', '广东', '四川', '浙江', '江苏', '河南', '福建','湖北','湖南','河北'],
         axisTick:{
-            show:false  
+            show:false
         },
         axisLabel:{
              rotate:45,
@@ -759,7 +627,7 @@ export default {
             name: '境外输入',
             type: 'bar',
             barWidth: '60%',
-            data: [10, 52, 200, 334, 390, 330, 220],
+            data: [0, 0, 0, 0, 0, 0, 0],
             barGap: '-100%',//添加此配置项即为重叠效果
             itemStyle:{
               color:'#EA4D34'
@@ -767,7 +635,7 @@ export default {
             barMaxWidth:10
         }
     ]
-};
+};    
             // 使用刚指定的配置项和数据显示图表。
 		  news.setOption(option);
           },
@@ -822,7 +690,7 @@ export default {
             itemStyle:{
                 color:'#E96C28'
             },
-            data: [0, 132, 101, 134, 90, 230, 210,0, 132, 101, 134, 90, 230, 210]
+            data: [0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0]
         },
         {
             name: '现有疑似',
@@ -837,6 +705,81 @@ export default {
         }
     ]
 };
+      //获取数据
+      //根据开始日期和结束日期获取所有日期的方法
+var day1 = '2020-05-09';
+// var day2 = '2018-01-09';
+var date = new Date();
+var formatDate = function (date) {  
+    var y = date.getFullYear();  
+    var m = date.getMonth() + 1;  
+    m = m < 10 ? ('0' + m) : m;  
+    var d = date.getDate();  
+    d = d < 10 ? ('0' + d) : d;  
+    var h = date.getHours();  
+    var minute = date.getMinutes();  
+    minute = minute < 10 ? ('0' + minute) : minute; 
+    var second= date.getSeconds();  
+    second = minute < 10 ? ('0' + second) : second;  
+    return y + '-' + m + '-' + d+' '+h+':'+minute+':'+ second;  
+};
+var day2 = formatDate(date).slice(0,10)
+// console.log(day2)
+function get(day1, day2) {  
+  var getDate = function(str) {  
+       var tempDate = new Date();  
+       var list = str.split("-");  
+       tempDate.setFullYear(list[0]);  
+       tempDate.setMonth(list[1] - 1);  
+       tempDate.setDate(list[2]);  
+       return tempDate;  
+   }  
+   var date1 = getDate(day1);  
+   var date2 = getDate(day2);  
+   if (date1 > date2) {  
+       var tempDate = date1;  
+       date1 = date2;  
+       date2 = tempDate;  
+   }  
+   date1.setDate(date1.getDate() + 1);  
+   var dateArr = [];  
+   var i = 0;  
+   while (!(date1.getFullYear() == date2.getFullYear()  
+           && date1.getMonth() == date2.getMonth() && date1.getDate() == date2  
+           .getDate())) {  
+        var dayStr =date1.getDate().toString();  
+        if(dayStr.length ==1){  
+          dayStr="0"+dayStr;  
+        }  
+        var monthStr = (date1.getMonth() + 1).toString();
+        if(monthStr.length ==1){  
+          monthStr="0"+monthStr;  
+        }  
+       dateArr[i] = date1.getFullYear() + "" + monthStr + ""  
+               + dayStr;  
+       i++;  
+       /* 
+        * document.write("<div style='display:block'>" + date1.getFullYear() + 
+        * "-" + (date1.getMonth() + 1) + "-" + date1.getDate() + "</div>"); 
+        */  
+       // document.write(dateArr[i] + "<br>");  
+       date1.setDate(date1.getDate() + 1);  
+   }  
+  dateArr.splice(0,0,day1)
+  dateArr.push(day2);
+//   console.log(dateArr);
+  return dateArr;  
+}
+get(day1, day2)
+var list = get(day1,day2)
+for(let item of list){
+  this.$http.post('https://route.showapi.com/2217-6?date='+item+'&country=china&showapi_appid=424316&showapi_sign=824ab60a19b84e00a7782f63045704b2')
+    .then(res=>{
+      console.log(res)
+    })
+}
+
+
           // 使用刚指定的配置项和数据显示图表。
 		  bro1.setOption(option);
           },
@@ -1117,17 +1060,7 @@ export default {
 		  bro5.setOption(option);
           }
     },
-    mounted() {
-      this.myEcharts();
-      this.myEcharts2();
-      this.myEcharts3();
-      this.myEcharts4();
-      this.myEcharts5();
-      this.myEcharts6();
-      this.myEcharts7();
-      this.myEcharts8();
-      this.myEcharts9();
-      this.myEcharts10();
+    created(){
       this.$http.post('https://route.showapi.com/2217-2?showapi_appid=424316&showapi_timestamp=20201109013619&showapi_sign=824ab60a19b84e00a7782f63045704b2')
         .then(res=>{
           let time = res.data.showapi_res_body.updateTime
@@ -1144,15 +1077,49 @@ export default {
           this.sum = data.confirmedNum + data.deadNum + data.curedNum  //累计确诊
           this.externalConfirmedNum = data.externalConfirmedNum //境外确诊
           this.asymptomaticNum = data.asymptomaticNum  //无症状感染者
-        }),
-        this.$http.post('https://route.showapi.com/2217-6?date=20201107&country=china&showapi_appid=424316&showapi_sign=824ab60a19b84e00a7782f63045704b2')
+          // console.log(res)
+          let city = []
+          let data2 = res.data.showapi_res_body.todayDetailList;
+          for(let item of data2){
+               city.push(JSON.parse(JSON.stringify(item).replace(/provinceName/g,'name')))
+          }
+          for(let list of city){
+            list.name = list.name.replace('省','');
+            list.name = list.name.replace('维吾尔自治区','');
+            list.name = list.name.replace('壮族自治区','');
+            list.name = list.name.replace('回族自治区','');
+            list.name = list.name.replace('自治区','');
+            list.name = list.name.replace('市','');
+          }
+          this.citylist = city
+        })
+
+          let date = dayjs(dayjs())
+          function formatZero(num) {   //解决单数没有0的问题
+         if(num.length < 2){
+           return '0' + num
+         }else return num
+      }
+      let datestr = String(date.$y) + formatZero(String(date.$M+1)) + formatZero(String(date.$D-1));
+        this.$http.post('https://route.showapi.com/2217-6?date='+datestr+'&country=china&showapi_appid=424316&showapi_sign=824ab60a19b84e00a7782f63045704b2')
           .then(res=>{
-            console.log(res)
             let data = res.data.showapi_res_body.list[0].inc_info
             this.confirmed_inc = data.confirmed_inc  //新增确诊
             this.dead_inc = data.dead_inc  //新增死亡
             this. cured_inc = data. cured_inc  //新增自愈
           })
+    },
+    mounted() {
+      this.myEcharts();
+      this.myEcharts2();
+      this.myEcharts3();
+      this.myEcharts4();
+      this.myEcharts5();
+      this.myEcharts6();
+      this.myEcharts7();
+      this.myEcharts8();
+      this.myEcharts9();
+      this.myEcharts10();
   }
 }
 </script>
@@ -1311,5 +1278,20 @@ export default {
       width:16%;
       text-align: center;
       margin-right: -.06rem;
+    }
+    .shade{
+      width:100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.1);
+      position: absolute;
+      left:0;
+      top:0rem;
+      text-align: center;
+      line-height: 2.6rem;
+      z-index: 99;
+    }
+    .shade>span{
+      display: inline-block;
+      transform: rotate(45deg);
     }
 </style>

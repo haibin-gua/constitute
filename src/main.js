@@ -10,6 +10,9 @@ import Vant from 'vant';
 import 'vant/lib/index.css';
 import VueClipboard from 'vue-clipboard2'
 import echarts from 'echarts'
+import date from './pages/Ep/date'
+
+Vue.prototype.date = date
 
 Vue.prototype.$echarts = echarts
 
